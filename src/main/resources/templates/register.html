@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Inscription</title>
+</head>
+<body>
+<h1>Inscription</h1>
+<form th:action="@{/register}" method="post">
+
+
+  <div>
+    <label for="matricule">Matricule:</label>
+    <input type="text" id="matricule" name="matricule"  required>
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"  required>
+  </div>
+
+
+
+  <div>
+    <label for="role">Rôle:</label>
+    <select id="role" name="roleString" required>
+      <option value="RESPONSABLE_COMMUNAL">Responsable Communal</option>
+      <option value="RESPONSABLE_DEPARTEMENTAL">Responsable Départemental</option>
+      <option value="RESPONSABLE_REGIONAL">Responsable Régional</option>
+      <option value="ADMIN">Administrateur</option>
+      <option value="SUPERADMIN">Super Administrateur</option>
+    </select>
+  </div>  <br>
+
+  <br>
+  <button type="submit">S'inscrire</button>
+</form>
+<p th:if="${error}" style="color: red;" th:text="${error}"></p>
+<p><a th:href="@{/login}">Se connecter</a></p>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Register</title>
+</head>
+<body>
+<h1>Register</h1>
+<form th:action="@{/register}" method="post" th:object="${user}">
+  <div>
+    <label for="adresse">Adresse:</label>
+    <input type="text" id="adresse" name="adresse" th:field="*{adresse}" required>
+  </div>
+  <div>
+    <label for="cni">Cni:</label>
+    <input type="text" id="cni" name="cni" th:field="*{cni}" required>
+  </div>
+  <div>
+    <label for="email">E-mail:</label>
+    <input type="text" id="email" name="email" th:field="*{email}" required>
+  </div>
+  <div>
+    <label for="matricule">Matricule:</label>
+    <input type="text" id="matricule" name="matricule" th:field="*{matricule}" required>
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" th:field="*{password}" required>
+  </div>
+  <div>
+    <label for="sexe">Sexe:</label>
+    <select id="sexe" name="sexe" th:field="*{sexe}" required>
+      <option value="" disabled selected>Choisissez...</option>
+      <option value="Homme">Homme</option>
+      <option value="Femme">Femme</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="telephone">Telephone:</label>
+    <input type="text" id="telephone" name="telephone" th:field="*{telephone}" required>
+  </div>
+  <div>
+    <label for="telephoneGfu">TelephoneGfu:</label>
+    <input type="text" id="telephoneGfu" name="telephoneGfu" th:field="*{telephoneGfu}" required>
+  </div>
+  <div>
+    <label for="role">Role:</label>
+    <select id="role" name="role" th:field="*{role}" required>
+      <option value="" disabled selected>Choisissez...</option>
+      <option value="ADMIN">ADMIN</option>
+      <option value="SUPERADMIN">SUPERADMIN</option>
+      <option value="RESPONSABLE_COMMUNAL">RESPONSABLE_COMMUNAL</option>
+      <option value="RESPONSABLE_DEPARTEMENTAL">RESPONSABLE_DEPARTEMENTAL</option>
+      <option value="RESPONSABLE_REGIONAL">RESPONSABLE_REGIONAL</option>
+    </select>
+  </div>
+
+
+  <div>
+    <button type="submit">Register</button>
+  </div>
+</form>
+<a th:href="@{/login}">Se connecter</a>
+</body>
+</html>
