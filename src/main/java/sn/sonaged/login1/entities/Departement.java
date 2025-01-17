@@ -33,4 +33,45 @@ public class Departement
 
     @OneToMany(mappedBy = "departement")
     private List<User> responsablesDepartementaux;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public List<Commune> getCommunes() {
+        return communes;
+    }
+
+    public void setCommunes(List<Commune> communes) {
+        this.communes = communes;
+    }
+
+    public List<User> getResponsablesDepartementaux() {
+        return responsablesDepartementaux;
+    }
+
+    public void setResponsablesDepartementaux(List<User> responsablesDepartementaux) {
+        this.responsablesDepartementaux = responsablesDepartementaux;
+    }
 }

@@ -1,0 +1,81 @@
+
+<!-- Dashboards selon les rôles -->
+<!-- commune-dashboard.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Dashboard ADMIN</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="dashboard">
+  <nav class="sidebar">
+    <h3>Nom de la commune</h3>
+    <ul>
+      <li><a>Collections</a></li>
+      <li><a>Rapports</a></li>
+      <li><a>Profil</a></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h2>Tableau de bord</h2>
+    <!-- Contenu spécifique à la commune -->
+  </main>
+</div>
+</body>
+</html>
+
+<!-- Styles CSS -->
+<style>
+  .login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+
+  .alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+  }
+
+  .dashboard {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 250px;
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+  }
+
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+</style>

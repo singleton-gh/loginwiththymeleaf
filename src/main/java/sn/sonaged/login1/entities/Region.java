@@ -30,4 +30,36 @@ public class Region
     @OneToMany(mappedBy = "region")
     private List<User> responsablesRegionaux;
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public List<Departement> getDepartements() {
+        return departements;
+    }
+
+    public void setDepartements(List<Departement> departements) {
+        this.departements = departements;
+    }
+
+    public List<User> getResponsablesRegionaux() {
+        return responsablesRegionaux;
+    }
+
+    public void setResponsablesRegionaux(List<User> responsablesRegionaux) {
+        this.responsablesRegionaux = responsablesRegionaux;
+    }
 }

@@ -1,12 +1,17 @@
 package sn.sonaged.login1.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
-@Table(name="user")
-public class User
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "matricule") // Ajoutez cette ligne
+})
+public class User implements UserDetails
     {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +44,8 @@ public class User
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "region_id") // Assurez-vous que le nom de la colonne correspond à votre base de données
         private Region region;
+
+
 
 
         public Long getId() {
@@ -168,4 +175,37 @@ public class User
         public void setRegion(Region region) {
             this.region = region;
         }
+
+
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities()
+            {
+                // Retournez les autorités de l'utilisateur (rôles)
+                return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
+            }
+
+            @Override
+            public String getUsername() {
+                return this.matricule; // Retourne le matricule comme nom d'utilisateur
+            }
+
+            @Override
+            public boolean isAccountNonExpired() {
+                return true; // Le compte n'est jamais expiré
+            }
+
+            @Override
+            public boolean isAccountNonLocked() {
+                return true; // Le compte n'est jamais verrouillé
+            }
+
+            @Override
+            public boolean isCredentialsNonExpired() {
+                return true; // Les informations d'identification ne sont jamais expirées
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return true; // Le compte est toujours activé
+            }
     }
