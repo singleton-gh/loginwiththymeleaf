@@ -5,12 +5,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import sn.sonaged.login1.exception.CustomAuthenticationException;
 import sn.sonaged.login1.repository.UserRepository;
 import sn.sonaged.login1.entities.User;
@@ -114,5 +116,11 @@ public class PasswordResetService
                 .parseClaimsJws(token)
                 .getBody()
                 .get("matricule", String.class);
+    }
+
+
+    @ExceptionHandler(CustomAuthenticationException.class)
+    public ResponseEntity<String> handleCustomAuthenticationException(CustomAuthenticationException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 }

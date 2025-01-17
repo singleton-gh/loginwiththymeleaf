@@ -3,6 +3,7 @@ package sn.sonaged.login1.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,8 @@ import sn.sonaged.login1.repository.UserRepository;
 import sn.sonaged.login1.service.AuthService;
 import sn.sonaged.login1.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+
 
 @Controller
 public class AuthController
@@ -51,47 +54,42 @@ log.info("Affichage de la page de connexion"); // Log une information
         return "login"; // Retourne la vue login.html
     }
 
-    /**
-     * Traite la soumission du formulaire de connexion.
-     */
+
     @PostMapping("/auth/login")
     public String handleLogin(@RequestParam String matricule, @RequestParam String password, Model model)
     {
-log.info("Tentative de connexion pour le matricule : {}", matricule); // Log une information
         try
         {
             // Authentification de l'utilisateur
             String token = authService.authenticate(matricule, password);
-log.debug("Token généré pour le matricule : {}", matricule); // Log de débogage
+            log.info("Token généré pour l'utilisateur : {}", matricule);
 
-            // Récupérer le rôle de l'utilisateur (supposons que le service retourne le rôle)
-            String role = authService.getUserRole(matricule);
-log.info("Rôle de l'utilisateur : {}", role); // Log une information
+            // Redirection en fonction du rôle
+            User user = userRepository.findByMatricule(matricule)
+                    .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 
-            // Rediriger en fonction du rôle
-            switch (role)
+            switch (user.getRole())
             {
-                case "RESPONSABLE_COMMUNAL":
-log.info("Redirection vers le tableau de bord communal"); // Log une information
-                    return "commune-dashboard";
-                case "RESPONSABLE_DEPARTEMENTAL":
-log.info("Redirection vers le tableau de bord départemental"); // Log une information
-                    return "departement-dashboard";
-                case "RESPONSABLE_REGIONAL":
-log.info("Redirection vers le tableau de bord régional"); // Log une information
-                    return "region-dashboard";
+                case RESPONSABLE_COMMUNAL:
+                    return "redirect:/communeDashboard/" + user.getCommune().getId();
+                case RESPONSABLE_DEPARTEMENTAL:
+                    return "redirect:/departementDashboard/" + user.getDepartement().getId();
+                case RESPONSABLE_REGIONAL:
+                    return "redirect:/regionDashboard/" + user.getRegion().getId();
+                case ADMIN:
+                    return "redirect:/adminDashboard";
+                case SUPERADMIN:
+                    return "redirect:/superAdminDashboard";
                 default:
-log.info("Redirection vers le tableau de bord administrateur"); // Log une information
-                    return "dashboard";
+                    return "redirect:/access-denied"; // Rediriger vers une page d'accès refusé si le rôle n'est pas reconnu
             }
         } catch (Exception e)
         {
-log.error("Erreur lors de la connexion pour le matricule : {}", matricule, e); // Log une erreur
+            log.error("Erreur lors de la connexion : {}", e.getMessage());
             model.addAttribute("error", "Identifiants incorrects");
             return "redirect:/login?error=true";
         }
     }
-
     /**
      * Affiche la page d'inscription.
      */
@@ -112,7 +110,6 @@ log.info("Affichage de la page d'inscription"); // Log une information
             @RequestParam String roleString, // Rôle passé en paramètre
             Model model)
     {
-
         // Vérifier si l'utilisateur existe déjà
         if (userRepository.findByMatricule(matricule).isPresent())
         {
@@ -126,7 +123,8 @@ log.info("Affichage de la page d'inscription"); // Log une information
         {
             role = Role.valueOf(roleString);
             log.info("Rôle converti avec succès : {}", role);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) 
+        {
             log.error("Rôle invalide : {}", roleString);
             model.addAttribute("error", "Rôle invalide.");
             return "register";
@@ -144,5 +142,13 @@ log.info("Affichage de la page d'inscription"); // Log une information
 
         // Rediriger vers la page de connexion
         return "redirect:/login";
+    }
+    
+    
+    @GetMapping("/reset")
+    public String resetPass()
+    {
+        log.info("Affichage de la page d'inscription");
+        return "reset-password";
     }
 }

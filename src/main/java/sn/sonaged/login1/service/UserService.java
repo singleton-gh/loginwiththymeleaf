@@ -22,8 +22,9 @@ public class UserService
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void resetPassword(String email) {
-        User user = (User) userRepository.findByEmail(email)
+    public void resetPassword(String email)
+    {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
 
         String resetToken = UUID.randomUUID().toString();

@@ -1,7 +1,7 @@
 package sn.sonaged.login1.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sn.sonaged.login1.util.JwtUtil;
@@ -9,6 +9,7 @@ import sn.sonaged.login1.entities.User;
 import sn.sonaged.login1.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,13 +32,12 @@ public class AuthService
         User user = userRepository.findByMatricule(matricule)
                 .orElseThrow(() -> new Exception("User not found with matricule: " + matricule));
 
-        if (!passwordEncoder.matches(password, user.getPassword()))
-        {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new Exception("Incorrect password");
         }
 
-        final UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getMatricule(), user.getPassword(), new ArrayList<>());
-        return jwtUtil.generateToken(userDetails);
+        // Utilisez les autorités de l'utilisateur
+        return jwtUtil.generateToken(user);
     }
 
     // Méthode pour réinitialiser le mot de passe
@@ -75,4 +75,9 @@ public class AuthService
         return user.getRole().name(); // Supposons que le rôle est stocké dans l'entité User
     }
 
+    public User getUserByMatricule(String matricule)
+    {
+        return userRepository.findByMatricule(matricule)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with matricule: " + matricule));
+    }
 }

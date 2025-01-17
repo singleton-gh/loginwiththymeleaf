@@ -24,18 +24,20 @@ public class DataInitializer implements CommandLineRunner
     public void run(String... args) throws Exception
     {
         // Vérifier si un utilisateur existe déjà
-        if (userRepository.findByMatricule("admin").isEmpty())
+        if (userRepository.findByMatricule("aa").isEmpty())
         {
             // Créer un utilisateur administrateur
             User admin = new User();
-            admin.setMatricule("admin");
-            admin.setPassword(passwordEncoder.encode("admin123")); // Encoder le mot de passe
+            admin.setMatricule("aa");
+            admin.setPassword(passwordEncoder.encode("ok")); // Encoder le mot de passe
             admin.setRole(Role.ADMIN); // Définir le rôle
             admin.setEmail("admin@example.com");
 
             // Sauvegarder l'utilisateur dans la base de données
             userRepository.save(admin);
             System.out.println("Utilisateur admin créé avec succès.");
+
+
         }
     }
 }

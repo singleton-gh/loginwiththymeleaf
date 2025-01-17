@@ -30,4 +30,35 @@ public class Commune
     @OneToMany(mappedBy = "commune")
     private List<User> responsablesCommunaux;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
+
+    public List<User> getResponsablesCommunaux() {
+        return responsablesCommunaux;
+    }
+
+    public void setResponsablesCommunaux(List<User> responsablesCommunaux) {
+        this.responsablesCommunaux = responsablesCommunaux;
+    }
 }
