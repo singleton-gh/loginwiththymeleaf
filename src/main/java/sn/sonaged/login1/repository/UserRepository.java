@@ -10,4 +10,7 @@ public interface UserRepository extends JpaRepository<User, Long>
     Optional<User> findByMatricule(String matricule);
     Optional<User> findByEmail(String email); // Retourne un Optional<User>
     Optional<User> findByResetToken(String resetToken); // Retourne un Optional<User>
+
+//Reinitialisation mot de passe
+    User findByEmailAndMatricule(String matricule,String email);
 }

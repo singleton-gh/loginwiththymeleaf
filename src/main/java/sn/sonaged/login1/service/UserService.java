@@ -1,6 +1,5 @@
 package sn.sonaged.login1.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sn.sonaged.login1.entities.User;
@@ -34,7 +33,8 @@ public class UserService
         // Envoyer un email avec le lien de réinitialisation contenant le token
     }
 
-    public void updatePassword(String resetToken, String newPassword) throws Throwable {
+    public void updatePassword(String resetToken, String newPassword) throws Throwable
+    {
         User user = (User) userRepository.findByResetToken(resetToken)
                 .orElseThrow(() -> new RuntimeException("Invalid reset token"));
 
@@ -46,5 +46,10 @@ public class UserService
     public void save(User user)
     {
         userRepository.save(user);
+    }
+
+    public User findByEmailAndMatricule(String email, String matricule)
+    {
+        return userRepository.findByEmailAndMatricule(email, matricule);
     }
 }

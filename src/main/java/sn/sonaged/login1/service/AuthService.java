@@ -40,6 +40,8 @@ public class AuthService
         return jwtUtil.generateToken(user);
     }
 
+ /*
+
     // Méthode pour réinitialiser le mot de passe
     public void resetPassword(String email)
     {
@@ -63,7 +65,7 @@ public class AuthService
         System.out.println("Reset token: " + resetToken);
     }
 
-
+*/
     /**
      * Récupère le rôle de l'utilisateur.
      */

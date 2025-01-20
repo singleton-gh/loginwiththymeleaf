@@ -4,10 +4,12 @@ package sn.sonaged.login1.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -29,7 +31,7 @@ public class SecurityConfig
         http
                 .csrf(AbstractHttpConfigurer::disable) // Désactiver CSRF pour les API stateless
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/auth/login", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/register", "/login","/reset", "/auth/login", "/auth/reset-password", "/auth/update-password", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                         .requestMatchers("/dashboard").authenticated() // Tous les utilisateurs authentifiés peuvent accéder à /dashboard
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPERADMIN") // Seuls ADMIN et SUPERADMIN peuvent accéder à /admin/**
                         .requestMatchers("/commune/**").hasRole("RESPONSABLE_COMMUNAL") // Seuls RESPONSABLE_COMMUNAL peuvent accéder à /commune/**
@@ -68,12 +70,24 @@ public class SecurityConfig
 
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder()
+    {
         return new BCryptPasswordEncoder(); // Utilisation de BCrypt pour le hachage des mots de passe
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception
+    {
         return authenticationConfiguration.getAuthenticationManager(); // Gestionnaire d'authentification
+    }
+
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder)
+    {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        return authProvider;
     }
 }
